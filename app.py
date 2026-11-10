@@ -93,7 +93,7 @@ for k in checkpoints:
                  "P(все разные)": round(1 - p, 4)})
 st.dataframe(pd.DataFrame(rows), use_container_width = True, hide_index = True)
 
-st.subheader("Эмпирическая проверка (Монте-Карло)")
+st.subheader("Эмпирическая проверка")
 
 if st.button("Запустить симуляцию", type="primary"):
     with st.spinner(f"Считаем {trials:,} испытаний..."):
