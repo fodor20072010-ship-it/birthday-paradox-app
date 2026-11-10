@@ -101,3 +101,4 @@ if st.button("Запустить симуляцию", type="primary"):
     a.metric("Теоретически", f"{p_curr:.4f}")
     b.metric("Эмпирически", f"{emp:.4f}", delta=f"{emp - p_curr:+.4f}")
     st.progress(min(max(emp, 0.0), 1.0))
+
