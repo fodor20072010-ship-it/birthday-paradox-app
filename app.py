@@ -3,19 +3,19 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import random
 
-st.set_page_config(page_title="birthday paradox", page_icon="🎂", layout="wide")
+st.set_page_config(page_title="парадокс дня рождения", page_icon="🎂", layout="wide")
 
 
-def prob(n, days=365):
+def prob(n, days = 365):
     if n > days:
         return 1.0
-    q = 1.0 #вероятность, что все дни разные
+    q = 1.0
     for i in range(n):
         q *= (days - i) / days
     return 1 - q
 
 
-def needed(target_probability, days=365): 
+def needed(target_probability,  days = 365): 
     q = 1.0
     n = 0
     while (1 - q) < target_probability:
@@ -24,8 +24,8 @@ def needed(target_probability, days=365):
     return n
 
 
-def run_mc(trials, n, days = 365): #trials - сколько эксперементов провели
-    c = 0 #cчётчик групп с совпадением
+def run_mc(trials, n, days = 365):
+    c = 0
     r = random.Random()
     for t in range(trials):
         bdays = []
@@ -34,8 +34,7 @@ def run_mc(trials, n, days = 365): #trials - сколько эксперемен
         uniq = set(bdays)
         if len(uniq) < len(bdays):
             c += 1
-    return c / trials #эмпирическая вероятность
-
+    return c / trials
 
 st.title("🎂 Парадокс дней рождения")
 st.write("Сколько человек нужно, чтобы вероятность совпадения превысила 50%? "
@@ -89,9 +88,9 @@ checkpoints = [k for k in checkpoints if k <= days]
 rows = []
 for k in checkpoints:
     p = prob(k, days)
-    rows.append({"n": k, "P(совпадение)": round(p, 4),
+    rows.append({"n(количество людей)": k, "P(совпадение)": round(p, 4),
                  "P(все разные)": round(1 - p, 4)})
-st.dataframe(pd.DataFrame(rows), use_container_width = True, hide_index = True)
+st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
 
 st.subheader("Эмпирическая проверка")
 
@@ -102,18 +101,3 @@ if st.button("Запустить симуляцию", type="primary"):
     a.metric("Теоретически", f"{p_curr:.4f}")
     b.metric("Эмпирически", f"{emp:.4f}", delta=f"{emp - p_curr:+.4f}")
     st.progress(min(max(emp, 0.0), 1.0))
-
-with st.expander("Почему интуиция ошибается?"):
-    pairs = n_current * (n_current - 1) // 2
-    st.markdown(
-        f"Интуиция отвечает на вопрос «сколько людей должны иметь тот же день "
-        f"рождения, что и я?» — для 50% нужно около 253 человек.\n\n"
-        f"Но здесь задача другая: совпадение любой пары. Число пар растёт "
-        f"квадратично: при n = {n_current} это {pairs} пар.\n\n"
-        f"Формула через противоположное событие (все дни разные):"
-    )
-    st.latex(r"P(\bar A) = \prod_{i=0}^{n-1} \frac{365 - i}{365}, \quad "
-             r"P(A) = 1 - P(\bar A)")
-
-st.caption("Формула верна для равномерного распределения и независимости "
-           "дней рождения.")
