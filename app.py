@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import random
 
-st.set_page_config(page_title="парадокс дня рождения", page_icon="🎂", layout="wide")
+st.set_page_config(page_title="парадокс дня рождения", layout="wide")
 
 
 def prob(n, days = 365):
@@ -36,7 +36,7 @@ def run_mc(trials, n, days = 365):
             c += 1
     return c / trials
 
-st.title("🎂 Парадокс дней рождения")
+st.title("Парадокс дней рождения")
 st.write("Сколько человек нужно, чтобы вероятность совпадения превысила 50%? "
          "Обычно думают ~180, но правильный ответ 23.")
 
